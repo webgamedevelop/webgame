@@ -1,0 +1,4 @@
+## Append samples of your project ##
+resources:
+- webgame_v1_webgame.yaml
+#+kubebuilder:scaffold:manifestskustomizesamples

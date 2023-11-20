@@ -7,4 +7,14 @@ layout:
 - go.kubebuilder.io/v4
 projectName: webgame
 repo: github.com/webgamedevelop/webgame
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: webgame.tech
+  group: webgame
+  kind: WebGame
+  path: github.com/webgamedevelop/webgame/api/v1
+  version: v1
 version: "3"

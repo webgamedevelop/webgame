@@ -1,0 +1,31 @@
+# permissions for end users to edit webgames.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: webgame-editor-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: webgame
+    app.kubernetes.io/part-of: webgame
+    app.kubernetes.io/managed-by: kustomize
+  name: webgame-editor-role
+rules:
+- apiGroups:
+  - webgame.webgame.tech
+  resources:
+  - webgames
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - webgame.webgame.tech
+  resources:
+  - webgames/status
+  verbs:
+  - get

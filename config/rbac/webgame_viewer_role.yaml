@@ -1,0 +1,27 @@
+# permissions for end users to view webgames.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: webgame-viewer-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: webgame
+    app.kubernetes.io/part-of: webgame
+    app.kubernetes.io/managed-by: kustomize
+  name: webgame-viewer-role
+rules:
+- apiGroups:
+  - webgame.webgame.tech
+  resources:
+  - webgames
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - webgame.webgame.tech
+  resources:
+  - webgames/status
+  verbs:
+  - get

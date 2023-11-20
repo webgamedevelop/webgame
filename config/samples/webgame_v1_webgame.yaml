@@ -1,0 +1,12 @@
+apiVersion: webgame.webgame.tech/v1
+kind: WebGame
+metadata:
+  labels:
+    app.kubernetes.io/name: webgame
+    app.kubernetes.io/instance: webgame-sample
+    app.kubernetes.io/part-of: webgame
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: webgame
+  name: webgame-sample
+spec:
+  # TODO(user): Add fields here
