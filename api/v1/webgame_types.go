@@ -17,6 +17,8 @@ limitations under the License.
 package v1
 
 import (
+	appsv1 "k8s.io/api/apps/v1"
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -25,21 +27,24 @@ import (
 
 // WebGameSpec defines the desired state of WebGame
 type WebGameSpec struct {
-	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
-
-	// Foo is an example field of WebGame. Edit webgame_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+	DisplayName string `json:"displayName"`
+	Replicas    *int32 `json:"replicas"`
+	Image       string `json:"image"`
+	// +kubebuilder:validation:Optional
+	ImagePullSecrets []corev1.LocalObjectReference `json:"imagePullSecrets,omitempty"`
 }
 
 // WebGameStatus defines the observed state of WebGame
 type WebGameStatus struct {
-	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
+	DeploymentStatus appsv1.DeploymentStatus `json:"deploymentStatus"`
 }
 
-//+kubebuilder:object:root=true
-//+kubebuilder:subresource:status
+// +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:resource:shortName=wg
+// +kubebuilder:printcolumn:name="DisplayName",type="string",JSONPath=".spec.displayName"
+// +kubebuilder:printcolumn:name="Replicas",type="integer",JSONPath=".spec.replicas"
+// +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 
 // WebGame is the Schema for the webgames API
 type WebGame struct {
@@ -50,7 +55,7 @@ type WebGame struct {
 	Status WebGameStatus `json:"status,omitempty"`
 }
 
-//+kubebuilder:object:root=true
+// +kubebuilder:object:root=true
 
 // WebGameList contains a list of WebGame
 type WebGameList struct {
