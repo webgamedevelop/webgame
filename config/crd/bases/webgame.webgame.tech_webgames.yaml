@@ -20,6 +20,12 @@ spec:
     - jsonPath: .spec.displayName
       name: DisplayName
       type: string
+    - jsonPath: .spec.gameType
+      name: GameType
+      type: string
+    - jsonPath: .spec.serverPort
+      name: ServerPort
+      type: string
     - jsonPath: .spec.replicas
       name: Replicas
       type: integer
@@ -48,6 +54,8 @@ spec:
             properties:
               displayName:
                 type: string
+              gameType:
+                type: string
               image:
                 type: string
               imagePullSecrets:
@@ -65,10 +73,17 @@ spec:
               replicas:
                 format: int32
                 type: integer
+              serverPort:
+                anyOf:
+                - type: integer
+                - type: string
+                x-kubernetes-int-or-string: true
             required:
             - displayName
+            - gameType
             - image
             - replicas
+            - serverPort
             type: object
           status:
             description: WebGameStatus defines the observed state of WebGame
