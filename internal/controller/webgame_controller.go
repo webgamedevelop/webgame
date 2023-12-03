@@ -19,6 +19,7 @@ package controller
 import (
 	"context"
 
+	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -33,24 +34,29 @@ type WebGameReconciler struct {
 	Scheme *runtime.Scheme
 }
 
-//+kubebuilder:rbac:groups=webgame.webgame.tech,resources=webgames,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=webgame.webgame.tech,resources=webgames/status,verbs=get;update;patch
-//+kubebuilder:rbac:groups=webgame.webgame.tech,resources=webgames/finalizers,verbs=update
+// +kubebuilder:rbac:groups=webgame.webgame.tech,resources=webgames,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=webgame.webgame.tech,resources=webgames/status,verbs=get;update;patch
+// +kubebuilder:rbac:groups=webgame.webgame.tech,resources=webgames/finalizers,verbs=update
 
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.
-// TODO(user): Modify the Reconcile function to compare the state specified by
-// the WebGame object against the actual cluster state, and then
-// perform operations to make the cluster state reflect the state specified by
-// the user.
-//
-// For more details, check Reconcile and its Result here:
-// - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.16.3/pkg/reconcile
 func (r *WebGameReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-	_ = log.FromContext(ctx)
+	logger := log.FromContext(ctx)
+	logger.Info("webgame event received")
+	defer func() { logger.Info("webgame event handling completed") }()
 
-	// TODO(user): your logic here
+	var webgame webgamev1.WebGame
+	if err := r.Get(ctx, req.NamespacedName, &webgame); err != nil {
+		if errors.IsNotFound(err) {
+			logger.Info("webgame not found. Ignoring since object must be deleted")
+			return ctrl.Result{}, nil
+		}
+		// Error reading the object - requeue the request
+		logger.Error(err, "unable to fetch webgame, requeue")
+		return ctrl.Result{}, err
+	}
 
+	logger.Info("show webgame name", "name", webgame.GetName())
 	return ctrl.Result{}, nil
 }
 
