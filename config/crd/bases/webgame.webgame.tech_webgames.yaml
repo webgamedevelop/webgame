@@ -29,6 +29,18 @@ spec:
     - jsonPath: .spec.replicas
       name: Replicas
       type: integer
+    - jsonPath: .status.deploymentStatus.availableReplicas
+      name: Available
+      type: integer
+    - jsonPath: .status.deploymentStatus.readyReplicas
+      name: Ready
+      type: integer
+    - jsonPath: .status.deploymentStatus.updatedReplicas
+      name: Updated
+      type: integer
+    - jsonPath: .status.deploymentStatus.observedGeneration
+      name: Observed
+      type: integer
     - jsonPath: .metadata.creationTimestamp
       name: AGE
       type: date
@@ -54,6 +66,9 @@ spec:
             properties:
               displayName:
                 type: string
+              domain:
+                default: localhost
+                type: string
               gameType:
                 type: string
               image:
@@ -70,6 +85,11 @@ spec:
                   type: object
                   x-kubernetes-map-type: atomic
                 type: array
+              indexPage:
+                default: /
+                type: string
+              ingressClass:
+                type: string
               replicas:
                 format: int32
                 type: integer
@@ -80,14 +100,19 @@ spec:
                 x-kubernetes-int-or-string: true
             required:
             - displayName
+            - domain
             - gameType
             - image
+            - indexPage
+            - ingressClass
             - replicas
             - serverPort
             type: object
           status:
             description: WebGameStatus defines the observed state of WebGame
             properties:
+              clusterIP:
+                type: string
               deploymentStatus:
                 description: DeploymentStatus is the most recently observed status
                   of the Deployment.
@@ -166,8 +191,8 @@ spec:
                     format: int32
                     type: integer
                 type: object
-            required:
-            - deploymentStatus
+              gameAddress:
+                type: string
             type: object
         type: object
     served: true

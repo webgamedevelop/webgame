@@ -11,8 +11,10 @@ metadata:
 spec:
   displayName: test-webgame-instance
   gameType: super-mario
-  serverPort: 8000
-  image: nginx:latest
+  ingressClass: nginx
+  indexPage: /index.html
+  serverPort: 80
+  image: webgamedevelop/2048:latest
   replicas: 1
   imagePullSecrets:
   - name: test-image-pull-secret

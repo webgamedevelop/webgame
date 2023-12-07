@@ -1,19 +1,3 @@
-/*
-Copyright 2023.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
-
 package v1
 
 import (
@@ -23,23 +7,27 @@ import (
 	"k8s.io/apimachinery/pkg/util/intstr"
 )
 
-// EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
-// NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
-
 // WebGameSpec defines the desired state of WebGame
 type WebGameSpec struct {
-	DisplayName string             `json:"displayName"`
-	GameType    string             `json:"gameType"`
-	ServerPort  intstr.IntOrString `json:"serverPort"`
-	Replicas    *int32             `json:"replicas"`
-	Image       string             `json:"image"`
+	DisplayName string `json:"displayName"`
+	GameType    string `json:"gameType"`
+	// +kubebuilder:default:=localhost
+	Domain string `json:"domain"`
+	// +kubebuilder:default:=/
+	IndexPage    string             `json:"indexPage"`
+	IngressClass string             `json:"ingressClass"`
+	ServerPort   intstr.IntOrString `json:"serverPort"`
+	Replicas     *int32             `json:"replicas"`
+	Image        string             `json:"image"`
 	// +kubebuilder:validation:Optional
 	ImagePullSecrets []corev1.LocalObjectReference `json:"imagePullSecrets,omitempty"`
 }
 
 // WebGameStatus defines the observed state of WebGame
 type WebGameStatus struct {
-	DeploymentStatus appsv1.DeploymentStatus `json:"deploymentStatus"`
+	DeploymentStatus appsv1.DeploymentStatus `json:"deploymentStatus,omitempty"`
+	GameAddress      string                  `json:"gameAddress,omitempty"`
+	ClusterIP        string                  `json:"clusterIP,omitempty"`
 }
 
 // +kubebuilder:object:root=true
@@ -49,6 +37,10 @@ type WebGameStatus struct {
 // +kubebuilder:printcolumn:name="GameType",type="string",JSONPath=".spec.gameType"
 // +kubebuilder:printcolumn:name="ServerPort",type="string",JSONPath=".spec.serverPort"
 // +kubebuilder:printcolumn:name="Replicas",type="integer",JSONPath=".spec.replicas"
+// +kubebuilder:printcolumn:name="Available",type="integer",JSONPath=".status.deploymentStatus.availableReplicas"
+// +kubebuilder:printcolumn:name="Ready",type="integer",JSONPath=".status.deploymentStatus.readyReplicas"
+// +kubebuilder:printcolumn:name="Updated",type="integer",JSONPath=".status.deploymentStatus.updatedReplicas"
+// +kubebuilder:printcolumn:name="Observed",type="integer",JSONPath=".status.deploymentStatus.observedGeneration"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 
 // WebGame is the Schema for the webgames API
