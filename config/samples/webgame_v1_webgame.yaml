@@ -10,8 +10,9 @@ metadata:
   name: webgame-sample
 spec:
   displayName: test-webgame-instance
-  gameType: super-mario
+  gameType: "2048"
   ingressClass: nginx
+  domain: localhost
   indexPage: /index.html
   serverPort: 80
   image: webgamedevelop/2048:latest
