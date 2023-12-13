@@ -41,8 +41,10 @@ func main() {
 	var enableLeaderElection bool
 	var probeAddr string
 	var levelEnabler int
+	var zapEncoder string
 	pflag.BoolP("help", "h", false, "Print help information")
 	pflag.IntVar(&levelEnabler, "level-enabler", 0, "LevelEnabler decides whether a given logging level is enabled when logging a message")
+	pflag.StringVar(&zapEncoder, "zap-encoder", "console", "Zap log encoding (one of 'json' or 'console')")
 	pflag.StringVar(&metricsAddr, "metrics-bind-address", ":8080", "The address the metric endpoint binds to.")
 	pflag.StringVar(&probeAddr, "health-probe-bind-address", ":8081", "The address the probe endpoint binds to.")
 	pflag.BoolVar(&enableLeaderElection, "leader-elect", false,
@@ -67,7 +69,7 @@ func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	l, flush := logger.New(ctx, zapcore.Level(-levelEnabler), "text", logger.DefaultEncoderConfig, os.Stdout)
+	l, flush := logger.New(ctx, zapcore.Level(-levelEnabler), zapEncoder, logger.DefaultEncoderConfig, os.Stdout)
 	klog.SetLoggerWithOptions(l, klog.FlushLogger(flush))
 	ctrl.SetLogger(l)
 
