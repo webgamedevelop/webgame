@@ -122,6 +122,7 @@ github.com/stretchr/testify v1.8.1/go.mod h1:w2LPCIKwWwSfY2zedu0+kehJoqGctiVI29o
 github.com/stretchr/testify v1.8.2 h1:+h33VjcLVPDHtOdpUCuF+7gSuG3yGIftsP1YvFihtJ8=
 github.com/webgamedevelop/logger v1.0.3 h1:U20kbDdLy45j2/X9+nfDKdJbh6zDY0vvGBfh2DdMnPg=
 github.com/webgamedevelop/logger v1.0.3/go.mod h1:EUN2/LEU+sdoUrDmYFu6U2D/0CocTDGwbRw/30UDqfw=
+github.com/webgamedevelop/logger v1.1.0/go.mod h1:EUN2/LEU+sdoUrDmYFu6U2D/0CocTDGwbRw/30UDqfw=
 github.com/yuin/goldmark v1.1.27/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.2.1/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.3.5/go.mod h1:mwnBkeHKe2W/ZEtQ+71ViKU8L12m81fl3OWwC1Zlc8k=
