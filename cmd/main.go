@@ -47,6 +47,7 @@ func main() {
 			"Enabling this will ensure there is only one active controller manager.")
 
 	klogflags.Init(flag.CommandLine)
+	logger.InitFlags(flag.CommandLine)
 	pflag.CommandLine.ParseErrorsWhitelist.UnknownFlags = true
 	pflag.CommandLine.SetNormalizeFunc(cliflag.WordSepNormalizeFunc)
 	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
