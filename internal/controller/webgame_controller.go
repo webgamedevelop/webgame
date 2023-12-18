@@ -29,6 +29,15 @@ type WebGameReconciler struct {
 // +kubebuilder:rbac:groups=webgame.webgame.tech,resources=webgames,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups=webgame.webgame.tech,resources=webgames/status,verbs=get;update;patch
 // +kubebuilder:rbac:groups=webgame.webgame.tech,resources=webgames/finalizers,verbs=update
+// +kubebuilder:rbac:groups=apps,resources=deployments,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=apps,resources=deployments/status,verbs=get;update;patch
+// +kubebuilder:rbac:groups=apps,resources=deployments/finalizers,verbs=update
+// +kubebuilder:rbac:groups=core,resources=services,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=core,resources=services/status,verbs=get;update;patch
+// +kubebuilder:rbac:groups=core,resources=services/finalizers,verbs=update
+// +kubebuilder:rbac:groups=networking.k8s.io,resources=ingresses,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=networking.k8s.io,resources=ingresses/status,verbs=get;update;patch
+// +kubebuilder:rbac:groups=networking.k8s.io,resources=ingresses/finalizers,verbs=update
 
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.
