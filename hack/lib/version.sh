@@ -183,7 +183,7 @@ function kube::version::ldflags() {
 
   kube::util::ensure-gnu-date
 
-  add_ldflag "buildDate" "$(${DATE} ${SOURCE_DATE_EPOCH:+"--date=@${SOURCE_DATE_EPOCH}"} -u +'%Y-%m-%dT%H:%M:%SZ')"
+  add_ldflag "buildDate" "$(${DATE} ${SOURCE_DATE_EPOCH:+"--date=@${SOURCE_DATE_EPOCH}"} +'%Y-%m-%dT%H:%M:%SZ')"
   if [[ -n ${KUBE_GIT_COMMIT-} ]]; then
     add_ldflag "gitCommit" "${KUBE_GIT_COMMIT}"
     add_ldflag "gitTreeState" "${KUBE_GIT_TREE_STATE}"
