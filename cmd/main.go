@@ -12,7 +12,8 @@ import (
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
 	_ "k8s.io/client-go/plugin/pkg/client/auth"
 	cliflag "k8s.io/component-base/cli/flag"
-	"k8s.io/component-base/logs/klogflags"
+	"k8s.io/component-base/cli/globalflag"
+	"k8s.io/component-base/version/verflag"
 	"k8s.io/klog/v2"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/healthz"
@@ -39,28 +40,26 @@ func main() {
 	var metricsAddr string
 	var enableLeaderElection bool
 	var probeAddr string
-	pflag.BoolP("help", "h", false, "Print help information")
 	pflag.StringVar(&metricsAddr, "metrics-bind-address", ":8080", "The address the metric endpoint binds to.")
 	pflag.StringVar(&probeAddr, "health-probe-bind-address", ":8081", "The address the probe endpoint binds to.")
 	pflag.BoolVar(&enableLeaderElection, "leader-elect", false,
 		"Enable leader election for controller manager. "+
 			"Enabling this will ensure there is only one active controller manager.")
 
-	klogflags.Init(flag.CommandLine)
+	var versionFlag pflag.FlagSet
+	verflag.AddFlags(&versionFlag)
+
+	globalflag.AddGlobalFlags(pflag.CommandLine, "webgame-controller")
 	logger.InitFlags(flag.CommandLine)
 	pflag.CommandLine.ParseErrorsWhitelist.UnknownFlags = true
-	pflag.CommandLine.SetNormalizeFunc(cliflag.WordSepNormalizeFunc)
-	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
-	pflag.Parse()
+	cliflag.InitFlags()
 
 	if pflag.CommandLine.Changed("help") {
 		pflag.Usage()
 		return
 	}
 
-	pflag.VisitAll(func(flag *pflag.Flag) {
-		klog.V(2).Infof("FLAG: --%s=%q", flag.Name, flag.Value)
-	})
+	verflag.PrintAndExitIfRequested()
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()

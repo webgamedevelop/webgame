@@ -84,7 +84,7 @@ lint-fix: golangci-lint ## Run golangci-lint linter and perform fixes
 
 .PHONY: build
 build: manifests generate fmt vet ## Build manager binary.
-	go build -o bin/manager cmd/main.go
+	go build -trimpath --ldflags "$(shell hack/lib/version.sh) -X 'k8s.io/component-base/version/verflag.programName=webgame-controller'" -o bin/manager cmd/main.go
 
 .PHONY: run
 run: manifests generate fmt vet ## Run a controller from your host.
