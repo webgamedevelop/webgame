@@ -61,12 +61,10 @@ func main() {
 
 	verflag.PrintAndExitIfRequested()
 
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
+	ctx := ctrl.SetupSignalHandler()
 
-	l, flush := logger.New(ctx, logger.DefaultEncoderConfig)
-	klog.SetLoggerWithOptions(l, klog.FlushLogger(flush))
-	ctrl.SetLogger(l)
+	setLogger(ctx)
+	defer klog.Flush()
 
 	mgr, err := ctrl.NewManager(ctrl.GetConfigOrDie(), ctrl.Options{
 		Scheme:                 scheme,
@@ -99,8 +97,14 @@ func main() {
 	}
 
 	setupLog.Info("starting manager")
-	if err := mgr.Start(ctrl.SetupSignalHandler()); err != nil {
+	if err := mgr.Start(ctx); err != nil {
 		setupLog.Error(err, "problem running manager")
 		os.Exit(1)
 	}
+}
+
+func setLogger(ctx context.Context) {
+	l, flush := logger.New(ctx, logger.DefaultEncoderConfig)
+	klog.SetLoggerWithOptions(l, klog.FlushLogger(flush))
+	ctrl.SetLogger(l)
 }
